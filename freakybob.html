@@ -340,3 +340,246 @@ button:hover {
     <iframe width="100%" height="152" src="https://www.youtube.com/embed/nCoN16zdM08?si=tQSk688KFJ3dnhA_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
+        <h1>Looking for the image gallery?</h1>
+<p>It's relocated.</p>
+<p>Please go to <a href="https://freakybob-team.github.io/Image.gallery/">https://freakybob-team.github.io/Image.gallery/</a>. This is where it will be hosted now.</p>
+<p>With love, the freakybob team. ❤️</p>
+<h1>The main people who helped make freakybob.site a real thing!</h1>
+<audio
+    src="audio/Carefree(chosic.com).mp3"
+    loop
+    autoplay>
+</audio>
+<div class="button-container">
+    <a href="https://freakybob.site">
+        <button>Go back to Main Website :3</button>
+    </a>
+    <a href="people.html">
+        <button>Check out some other people!</button>
+    </a>
+</div>
+
+<div class="contributors">
+    <button onclick="showInfo('Squirrel')">Squirrel</button>
+    <button onclick="showInfo('Wish')">Wish</button>
+    <button onclick="showInfo('Hater')">#2 Twitter Hater</button>
+</div>
+<div id="description" class="description"></div>
+
+<div class="image-container" id="person-image" style="display: none;">
+    <img id="image" alt="Person Image">
+</div>
+
+<script>
+    function showInfo(name) {
+        const descriptions = {
+            'Squirrel': 'Squirrel bought the domain and does most of all the coding! Silly boykisser :3  ',
+            'Wish': 'Wish is a main developer for the website and made it so the music gallery can live on!',
+            'Hater': '#2 Twitter Hater helped with giving all sorts of spongebob images!',
+        };
+
+        const images = {
+            'Squirrel': 'images/pfps/Boykisser Squirrel.png',
+            'Wish': 'images/pfps/wish.png',
+            'Hater': 'images/pfps/twitterhater.webp',
+        };
+
+        const descriptionDiv = document.getElementById('description');
+        const personImage = document.getElementById('person-image');
+        const image = document.getElementById('image');
+
+        descriptionDiv.innerText = descriptions[name] || 'Information not available.';
+        image.src = images[name] || '';
+        personImage.style.display = (name in images) ? 'block' : 'none';
+    }
+</script>
+    <!-- Audio elements without controls, autoplay and preload set -->
+    <audio id="background-music" loop autoplay preload="auto">
+        <source src="audio/Sneaky-Snitch(chosic.com).mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="click-sound" src="https://github.com/5quirre1/Freakybob.site/raw/main/i%E2%80%99m-spongebob-made-with-Voicemod.mp3"></audio>
+    <div id="container">
+        <div id="shop">
+            <h2>Shop</h2>
+            <button id="buy-autoclicker" class="disabled">Buy Autoclicker (100 clicks)</button>
+            <button id="buy-freakystar" class="disabled">Buy Freaky Star (300 clicks)</button>
+            <h3>Upgrades</h3>
+            <button id="buy-multiplier-1" class="disabled">1+ Clicks Multiplier (15 clicks)</button>
+            <button id="buy-multiplier-8" class="disabled">8+ Clicks Multiplier (120 clicks)</button>
+        </div>
+        <div id="click-area">
+            <div id="clicker"></div>
+            <div id="stats">
+                <p>Clicks: <span id="click-count">0</span></p>
+                <p>Clicks Per Second: <span id="clicks-per-second">0</span></p>
+            </div>
+            <div id="achievements">
+                <h2>Achievements</h2>
+            </div>
+        </div>
+    </div>
+    <!-- Mute/Unmute Button -->
+    <button id="mute-button">Mute Music</button>
+
+    <script>
+let clickCount = 0;
+let clicksPerSecond = 0;
+let autoClicker = false;
+let freakyStar = { owned: false, clicksPerSecond: 0 };
+let clickMultiplier = 1;
+let multipliers = {
+    1: { count: 0, max: 3, cost: 15, increment: 1 },
+    8: { count: 0, max: 3, cost: 120, increment: 8 }
+};
+const achievements = [
+    { name: 'Started this Journey', clicks: 1 },
+    { name: 'Beginner Clicker', clicks: 300 },
+    { name: 'You must love clicking freakybob', clicks: 900 },
+    { name: 'First 1000!', clicks: 1000 },
+    { name: 'Finger destroyer', clicks: 3000 },
+    { name: 'Intermediate clicker', clicks: 7000 },
+    { name: 'Mouse destroyer', clicks: 13000 },
+    { name: 'First 20,000!', clicks: 20000 },
+    { name: 'Beginner Freakybob', clicks: 27000 },
+    { name: 'King clicker', clicks: 70000 },
+    { name: "THE ULTIMATE FINGER DESTROYER!!", clicks: 100000 },
+    { name: 'Freakybob of the year!', clicks: 117000 },
+    { name: 'The literal Freakybob god', clicks: 130000 },
+    { name: 'The mouse is not dead yet!', clicks: 135000 },
+    { name: 'Freakybob of the century', clicks: 140000 },
+    { name: 'Freakybob of the millennium', clicks: 150000 },
+    { name: 'The ultimate Freakybob', clicks: 160000 },
+    { name: 'Freakybob of the universe', clicks: 190000 },
+    { name: 'The Freakybob God', clicks: 217000 },
+    { name: 'The..end..?', clicks: 240000 },
+    { name: 'For now...', clicks: 260000 }
+];
+
+const unlockedAchievements = new Set();
+let isMuted = false; // Default to unmuted
+
+function playClickSound() {
+    if (isMuted) return; // Prevent sound if muted
+
+    const clickSound = new Audio('https://github.com/5quirre1/Freakybob.site/raw/main/i%E2%80%99m-spongebob-made-with-Voicemod.mp3');
+    clickSound.play().catch(err => console.error(err));
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    document.getElementById('mute-button').classList.toggle('muted', isMuted);
+    document.getElementById('background-music').muted = isMuted;
+    document.getElementById('mute-button').textContent = isMuted ? 'Unmute Music' : 'Mute Music';
+}
+
+function updateStats() {
+    document.getElementById('click-count').textContent = clickCount;
+    document.getElementById('clicks-per-second').textContent = clicksPerSecond;
+}
+
+function updateAchievements() {
+    const achievementsContainer = document.getElementById('achievements');
+    achievements.forEach(achievement => {
+        if (clickCount >= achievement.clicks && !unlockedAchievements.has(achievement.name)) {
+            unlockedAchievements.add(achievement.name);
+            const achievementElement = document.createElement('p');
+            achievementElement.textContent = achievement.name;
+            achievementElement.className = 'achievement';
+            achievementsContainer.appendChild(achievementElement);
+            setTimeout(() => {
+                achievementElement.classList.add('out');
+                setTimeout(() => achievementElement.remove(), 500);
+            }, 5000); // 5 seconds before fade out
+        }
+    });
+}
+
+function updateButtonStates() {
+    document.getElementById('buy-autoclicker').classList.toggle('disabled', clickCount < 100 || autoClicker);
+    document.getElementById('buy-freakystar').classList.toggle('disabled', clickCount < 300 || freakyStar.owned);
+    document.getElementById('buy-multiplier-1').classList.toggle('disabled', clickCount < multipliers[1].cost || multipliers[1].count >= multipliers[1].max);
+    document.getElementById('buy-multiplier-8').classList.toggle('disabled', clickCount < multipliers[8].cost || multipliers[8].count >= multipliers[8].max);
+}
+
+function buyItem(cost, itemName, enableNext) {
+    if (clickCount >= cost) {
+        clickCount -= cost;
+        updateButtonStates(); // Update button states after buying an item
+        if (enableNext) {
+            document.getElementById(enableNext).classList.remove('disabled');
+            document.getElementById(enableNext).classList.add('enabled');
+        }
+        updateStats();
+        updateAchievements();
+    }
+}
+
+function handleClick() {
+    playClickSound();
+    clickCount += 1 * clickMultiplier;
+    updateStats();
+    updateAchievements();
+    updateButtonStates(); // Update button states after a click
+}
+
+// Initialize game
+function initialize() {
+    document.getElementById('clicker').addEventListener('click', handleClick);
+    document.getElementById('buy-autoclicker').addEventListener('click', function() {
+        if (clickCount >= 100 && !autoClicker) {
+            autoClicker = true;
+            buyItem(100, 'buy-autoclicker', 'buy-freakystar');
+        }
+    });
+    document.getElementById('buy-freakystar').addEventListener('click', function() {
+        if (clickCount >= 300 && !freakyStar.owned) {
+            freakyStar.owned = true;
+            freakyStar.clicksPerSecond = 40;
+            buyItem(300, 'buy-freakystar', null);
+        }
+    });
+    document.getElementById('buy-multiplier-1').addEventListener('click', function() {
+        const upgrade = multipliers[1];
+        if (clickCount >= upgrade.cost && upgrade.count < upgrade.max) {
+            clickMultiplier += upgrade.increment;
+            upgrade.count += 1;
+            buyItem(upgrade.cost, 'buy-multiplier-1', null);
+        }
+    });
+    document.getElementById('buy-multiplier-8').addEventListener('click', function() {
+        const upgrade = multipliers[8];
+        if (clickCount >= upgrade.cost && upgrade.count < upgrade.max) {
+            clickMultiplier += upgrade.increment;
+            upgrade.count += 1;
+            buyItem(upgrade.cost, 'buy-multiplier-8', null);
+        }
+    });
+
+    // Auto-clicker and Freaky Star logic
+    setInterval(() => {
+        if (autoClicker) {
+            clickCount += 1 * clickMultiplier;
+            updateStats();
+            updateAchievements();
+        }
+    }, 1000);
+    
+    setInterval(() => {
+        if (freakyStar.owned) {
+            clickCount += freakyStar.clicksPerSecond;
+            updateStats();
+            updateAchievements();
+        }
+    }, 2000);
+
+    updateButtonStates(); // Set initial button states
+}
+
+initialize();
+
+// Add event listener for mute/unmute
+document.getElementById('mute-button').addEventListener('click', toggleMute);
+
+    </script>
+    
